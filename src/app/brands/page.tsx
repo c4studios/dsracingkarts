@@ -45,7 +45,7 @@ const serviceBrands: Brand[] = [
   { name: "FA Kart", logo: "/images/brands/fa-kart.png", dark: true },
   { name: "DAP", logo: "/images/brands/dap.png" },
   { name: "MS Kart", logo: "/images/brands/ms-kart.png" },
-  { name: "Phoenix Karts" },
+  { name: "Phoenix Karts", logo: "/images/brands/phoenix.png" },
   { name: "Omega Karts", logo: "/images/brands/omega-karts.png" },
   // Engines
   { name: "Rotax", logo: "/images/brands/rotax.svg", href: "/brands/rotax" },
