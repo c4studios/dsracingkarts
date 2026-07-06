@@ -54,7 +54,7 @@ const serviceBrands: Brand[] = [
   { name: "Honda", logo: "/images/brands/honda.svg" },
   { name: "Briggs & Stratton", logo: "/images/brands/briggs.png" },
   { name: "Torini", logo: "/images/brands/torini.png" },
-  { name: "Tillotson" },
+  { name: "Tillotson", logo: "/images/brands/tillotson.png" },
   { name: "Walbro", logo: "/images/brands/walbro.png" },
   { name: "K1R Racing Products", logo: "/images/brands/k1r.png" },
 ];
