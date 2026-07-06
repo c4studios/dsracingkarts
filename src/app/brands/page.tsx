@@ -32,7 +32,7 @@ const serviceBrands: Brand[] = [
   { name: "DS Racing Karts", logo: "/images/brands/dsr.png" },
   // Chassis — the karts we set up, tune and service
   { name: "OTK Kart Group", logo: "/images/brands/otk.png", href: "/brands/otk" },
-  { name: "Tony Kart" },
+  { name: "Tony Kart", logo: "/images/brands/tony-kart.png" },
   { name: "Kosmic" },
   { name: "Redspeed" },
   { name: "Kart Republic", logo: "/images/brands/kart-republic.png", href: "/brands/kart-republic" },
@@ -44,7 +44,7 @@ const serviceBrands: Brand[] = [
   { name: "Energy Corse" },
   { name: "FA Kart", logo: "/images/brands/fa-kart.png", dark: true },
   { name: "DAP", logo: "/images/brands/dap.png" },
-  { name: "MS Kart" },
+  { name: "MS Kart", logo: "/images/brands/ms-kart.png" },
   { name: "Phoenix Karts" },
   { name: "Omega Karts", logo: "/images/brands/omega-karts.png" },
   // Engines
