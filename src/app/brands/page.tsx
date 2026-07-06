@@ -34,7 +34,7 @@ const serviceBrands: Brand[] = [
   { name: "OTK Kart Group", logo: "/images/brands/otk.png", href: "/brands/otk" },
   { name: "Tony Kart", logo: "/images/brands/tony-kart.png" },
   { name: "Kosmic" },
-  { name: "Redspeed" },
+  { name: "Redspeed", logo: "/images/brands/redspeed.png" },
   { name: "Kart Republic", logo: "/images/brands/kart-republic.png", href: "/brands/kart-republic" },
   { name: "CRG Kart", logo: "/images/brands/crg.png", href: "/brands/crg" },
   { name: "Arrow", logo: "/images/brands/arrow.png", href: "/brands/arrow" },
