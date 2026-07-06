@@ -42,8 +42,8 @@ const serviceBrands: Brand[] = [
   { name: "Praga", logo: "/images/brands/praga.svg", dark: true },
   { name: "Parolin", logo: "/images/brands/parolin.png" },
   { name: "Energy Corse" },
-  { name: "FA Kart" },
-  { name: "DAP" },
+  { name: "FA Kart", logo: "/images/brands/fa-kart.png", dark: true },
+  { name: "DAP", logo: "/images/brands/dap.png" },
   { name: "MS Kart" },
   { name: "Phoenix Karts" },
   { name: "Omega Karts", logo: "/images/brands/omega-karts.png" },
@@ -78,6 +78,8 @@ const supplyBrands: Brand[] = [
   { name: "RK Racing Chain", logo: "/images/brands/rk.png" },
   { name: "Dunlop", logo: "/images/brands/dunlop.svg" },
   { name: "Maxxis", logo: "/images/brands/maxxis.svg" },
+  { name: "MG Tires", logo: "/images/brands/mg-tires.png" },
+  { name: "LeCont", logo: "/images/brands/lecont.png" },
   { name: "Jecko", logo: "/images/brands/jecko.png", dark: true },
   // Components, seats, brakes, steering and data — moved from the service wall
   { name: "KG Kart", logo: "/images/brands/kg.png" },
@@ -96,6 +98,12 @@ const supplyBrands: Brand[] = [
   { name: "AiM (MyChron)", logo: "/images/brands/aim.png" },
   { name: "Alfano", logo: "/images/brands/alfano.png", dark: true },
   { name: "NR Racing", logo: "/images/brands/nr.png" },
+  // Racewear, safety and wheels — carried via DPE
+  { name: "Alpinestars", logo: "/images/brands/alpinestars.png" },
+  { name: "Arai", logo: "/images/brands/arai.png" },
+  { name: "Bell", logo: "/images/brands/bell.png", dark: true },
+  { name: "Bengio", logo: "/images/brands/bengio.png" },
+  { name: "Douglas Wheels", logo: "/images/brands/douglas.png" },
 ];
 
 function BrandTile({ brand }: { brand: Brand }) {
