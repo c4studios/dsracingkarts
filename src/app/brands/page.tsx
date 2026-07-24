@@ -33,7 +33,7 @@ const serviceBrands: Brand[] = [
   // Chassis — the karts we set up, tune and service
   { name: "OTK Kart Group", logo: "/images/brands/otk.png", href: "/brands/otk" },
   { name: "Tony Kart", logo: "/images/brands/tony-kart.png" },
-  { name: "Kosmic" },
+  { name: "Kosmic", logo: "/images/brands/kosmic.png", dark: true },
   { name: "Redspeed", logo: "/images/brands/redspeed.png" },
   { name: "Kart Republic", logo: "/images/brands/kart-republic.png", href: "/brands/kart-republic" },
   { name: "CRG Kart", logo: "/images/brands/crg.png", href: "/brands/crg" },
@@ -41,10 +41,11 @@ const serviceBrands: Brand[] = [
   { name: "Birel ART", logo: "/images/brands/birel-art.png" },
   { name: "Praga", logo: "/images/brands/praga.svg", dark: true },
   { name: "Parolin", logo: "/images/brands/parolin.png" },
-  { name: "Energy Corse" },
+  { name: "Energy Corse", logo: "/images/brands/energy-corse.png" },
   { name: "FA Kart", logo: "/images/brands/fa-kart.png", dark: true },
   { name: "DAP", logo: "/images/brands/dap.png" },
   { name: "MS Kart", logo: "/images/brands/ms-kart.png" },
+  { name: "Intrepid", logo: "/images/brands/intrepid.png" },
   { name: "Phoenix Karts", logo: "/images/brands/phoenix.png" },
   { name: "Omega Karts", logo: "/images/brands/omega-karts.png" },
   // Engines
