@@ -46,7 +46,7 @@ const ADMIN_ORDER_EMAIL = process.env.ORDER_NOTIFICATION_EMAIL || "dsracing@bigp
 const ORDER_EMAIL_FROM = process.env.ORDER_EMAIL_FROM || DEFAULT_TRANSACTIONAL_EMAIL_FROM;
 // Public-facing help line appended to error messages so customers can
 // self-resolve (or reach us directly) instead of getting stuck at checkout.
-const SUPPORT_CONTACT = "If you need a hand, email dsracing@bigpond.com or call 0492 454 854 and we'll sort it out.";
+const SUPPORT_CONTACT = "If you need a hand, call 0492 454 854 or use the contact form on our site and we'll sort it out.";
 const PHONE_CONFLICT_MESSAGE =
   "This phone number is already linked to a previous order under a different email address. " +
   "If you've ordered with us before, please check out using that same email. " +

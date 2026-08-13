@@ -278,7 +278,6 @@ export default async function HomePage() {
                 description:
                   "Sydney's karting solutions specialist — chassis, parts, servicing, and racewear. We help racers solve karting problems with hands-on workshop support, endurance kart preparation, 2-stroke and 4-stroke engine tuning, and custom team racewear. Australia-wide shipping.",
                 telephone: "+61492454854",
-                email: "dsracing@bigpond.com",
                 image: `${siteUrl}/images/history/Site Logo (2).png`,
                 logo: `${siteUrl}/images/history/Site Logo (2).png`,
                 address: {

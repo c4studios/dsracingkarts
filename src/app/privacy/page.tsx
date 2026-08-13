@@ -97,9 +97,9 @@ export default function PrivacyPage() {
             <h2 className="font-heading text-lg uppercase tracking-[0.1em] text-white mb-3">7. Your Rights</h2>
             <p>
               Under the Australian Privacy Principles, you have the right to request access to, correction of,
-              or deletion of your personal information. To exercise these rights, please contact us at{" "}
-              <a href="mailto:dsracing@bigpond.com" className="text-racing-red hover:underline">
-                dsracing@bigpond.com
+              or deletion of your personal information. To exercise these rights, please contact us via our{" "}
+              <a href="/contact" className="text-racing-red hover:underline">
+                contact form
               </a>.
             </p>
           </div>
@@ -119,7 +119,8 @@ export default function PrivacyPage() {
               If you have questions about this Privacy Policy, please contact us:
             </p>
             <ul className="list-none space-y-1 mt-2 text-white/60">
-              <li>Email: <a href="mailto:dsracing@bigpond.com" className="text-racing-red hover:underline">dsracing@bigpond.com</a></li>
+              <li>Enquiries: <a href="/contact" className="text-racing-red hover:underline">contact form</a></li>
+              <li>Phone: <a href="tel:+61492454854" className="text-racing-red hover:underline">0492 454 854</a></li>
               <li>Location: Long Reef Crescent, Woodbine, NSW, Australia</li>
               <li>Facebook: <a href="https://www.facebook.com/dsracingkarts" target="_blank" rel="noopener noreferrer" className="text-racing-red hover:underline">@dsracingkarts</a></li>
             </ul>

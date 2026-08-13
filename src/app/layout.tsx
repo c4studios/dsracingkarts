@@ -177,7 +177,6 @@ export default function RootLayout({
                     "Sydney's go kart specialists — 8,000+ kart parts, custom racewear, engine rebuilds and full chassis servicing. OTK, IAME, Rotax, CRG and more. Shipping Australia-wide.",
                   url: SITE_URL,
                   telephone: "+61492454854",
-                  email: "dsracing@bigpond.com",
                   address: {
                     "@type": "PostalAddress",
                     streetAddress: "Long Reef Crescent",

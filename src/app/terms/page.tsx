@@ -131,7 +131,8 @@ export default function TermsPage() {
               For questions regarding these terms, please contact us:
             </p>
             <ul className="list-none space-y-1 mt-2 text-white/60">
-              <li>Email: <a href="mailto:dsracing@bigpond.com" className="text-racing-red hover:underline">dsracing@bigpond.com</a></li>
+              <li>Enquiries: <a href="/contact" className="text-racing-red hover:underline">contact form</a></li>
+              <li>Phone: <a href="tel:+61492454854" className="text-racing-red hover:underline">0492 454 854</a></li>
               <li>Location: Long Reef Crescent, Woodbine, NSW, Australia</li>
               <li>Facebook: <a href="https://www.facebook.com/dsracingkarts" target="_blank" rel="noopener noreferrer" className="text-racing-red hover:underline">@dsracingkarts</a></li>
             </ul>

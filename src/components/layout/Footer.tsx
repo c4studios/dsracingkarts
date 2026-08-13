@@ -60,7 +60,7 @@ export function Footer() {
             </li>
             <li className="flex items-center gap-2.5">
               <Mail size={14} className="text-racing-red shrink-0" />
-              <a href="mailto:dsracing@bigpond.com" className="hover:text-white transition-colors">dsracing@bigpond.com</a>
+              <Link href="/contact" className="hover:text-white transition-colors">Send us a message</Link>
             </li>
             <li className="flex items-center gap-2.5">
               <Phone size={14} className="text-racing-red shrink-0" />

@@ -80,9 +80,9 @@ export default async function ContactPage({ searchParams }: Props) {
                   <Mail size={20} className="text-racing-red shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-heading text-sm uppercase tracking-[0.1em] text-white mb-1">Email</h3>
-                    <a href="mailto:dsracing@bigpond.com" className="text-sm text-white/50 hover:text-racing-red transition-colors">
-                      dsracing@bigpond.com
-                    </a>
+                    <p className="text-sm text-white/50">
+                      Use the enquiry form and it comes straight through to us.
+                    </p>
                   </div>
                 </div>
 
@@ -213,7 +213,6 @@ export default async function ContactPage({ searchParams }: Props) {
                 name: "DS Racing Karts",
                 url: siteUrl,
                 telephone: "+61492454854",
-                email: "dsracing@bigpond.com",
                 address: {
                   "@type": "PostalAddress",
                   streetAddress: "Long Reef Crescent",

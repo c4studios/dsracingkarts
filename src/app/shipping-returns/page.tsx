@@ -50,8 +50,8 @@ export default function ShippingReturnsPage() {
             <ul className="list-disc list-inside space-y-1 text-white/60">
               <li>Returns are accepted within 14 days of delivery for unused, unopened items in their
                 original packaging.</li>
-              <li>To start a return, contact us at{" "}
-                <a href="mailto:dsracing@bigpond.com" className="text-racing-red hover:underline">dsracing@bigpond.com</a>{" "}
+              <li>To start a return, get in touch via our{" "}
+                <a href="/contact" className="text-racing-red hover:underline">contact form</a>{" "}
                 with your order number and the reason for the return.</li>
               <li>The buyer is responsible for return shipping costs unless the item is faulty or was
                 supplied incorrectly &mdash; in that case, return shipping is at our cost.</li>
@@ -76,7 +76,7 @@ export default function ShippingReturnsPage() {
             <h2 className="font-heading text-lg uppercase tracking-[0.1em] text-white mb-3">Contact</h2>
             <p>Questions about shipping or returns? Get in touch:</p>
             <ul className="list-none space-y-1 mt-2 text-white/60">
-              <li>Email: <a href="mailto:dsracing@bigpond.com" className="text-racing-red hover:underline">dsracing@bigpond.com</a></li>
+              <li>Enquiries: <a href="/contact" className="text-racing-red hover:underline">contact form</a></li>
               <li>Phone: <a href="tel:+61492454854" className="text-racing-red hover:underline">0492 454 854</a></li>
               <li>Location: Long Reef Crescent, Woodbine, NSW, Australia</li>
             </ul>
