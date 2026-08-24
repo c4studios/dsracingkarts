@@ -703,7 +703,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert order line items
-    const itemsToInsert = orderItems.map((item: any) => ({
+    // `square_variation_token` rides along on the in-memory cart lines because
+    // buildSquareOrderLineItems() needs it below, but it is NOT a column on
+    // order_items. Sending it makes PostgREST reject the entire insert (42703),
+    // which fails every checkout. Strip it before it hits the database.
+    const itemsToInsert = orderItems.map(({ square_variation_token: _sqToken, ...item }: any) => ({
       ...item,
       order_id: order.id,
     }));
