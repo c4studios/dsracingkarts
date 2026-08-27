@@ -380,6 +380,30 @@ export async function ShopPageView({ params, basePath }: ShopPageViewProps) {
         )}
       </div>
 
+      <div className="mb-6">
+        <div
+          className={`flex items-center gap-3 mb-3 ${
+            showMobileCategoryLanding ? "hidden md:flex" : "flex"
+          }`}
+        >
+          <span className="h-[1px] w-8 bg-brand-red" />
+          <span className="font-heading text-xs tracking-[0.4em] text-brand-red uppercase">
+            {showSubcategoryLanding
+              ? `${selectedChildCategories.length} Subcategories`
+              : `${productCount} Products`}
+          </span>
+        </div>
+        <h1 className="section-heading capitalize">{categoryTitle}</h1>
+      </div>
+
+      <div className="mb-8">
+        <SearchAutocomplete initialQuery={params.search} />
+      </div>
+
+      {/* Gift card, chassis and appointment-only notices. These sit BELOW the
+          search field deliberately: this is an Operate surface, and a visitor
+          hunting a part among 8,000+ SKUs was previously shown two adverts and
+          a 'do not visit the workshop' warning before being allowed to search. */}
       <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         <Link
           href="/gift-card"
@@ -431,26 +455,6 @@ export async function ShopPageView({ params, basePath }: ShopPageViewProps) {
           </Link>{" "}
           to arrange an appointment before visiting.
         </p>
-      </div>
-
-      <div className="mb-6">
-        <div
-          className={`flex items-center gap-3 mb-3 ${
-            showMobileCategoryLanding ? "hidden md:flex" : "flex"
-          }`}
-        >
-          <span className="h-[1px] w-8 bg-brand-red" />
-          <span className="font-heading text-xs tracking-[0.4em] text-brand-red uppercase">
-            {showSubcategoryLanding
-              ? `${selectedChildCategories.length} Subcategories`
-              : `${productCount} Products`}
-          </span>
-        </div>
-        <h1 className="section-heading capitalize">{categoryTitle}</h1>
-      </div>
-
-      <div className="mb-8">
-        <SearchAutocomplete initialQuery={params.search} />
       </div>
 
       {/* ── Mobile-only category landing ─────────────────────────────

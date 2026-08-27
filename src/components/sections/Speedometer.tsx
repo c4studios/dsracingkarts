@@ -243,7 +243,7 @@ export function Speedometer({ partsAvailableCount = DEFAULT_PARTS_AVAILABLE }: S
       {
         value: Math.max(partsAvailableCount, DEFAULT_PARTS_AVAILABLE),
         suffix: "+",
-        label: "Parts Available",
+        label: "Parts In Catalogue",
       },
       ...BASE_STATS,
     ],

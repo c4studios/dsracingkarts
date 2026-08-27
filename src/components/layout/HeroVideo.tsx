@@ -92,32 +92,32 @@ export function HeroVideo() {
 
     v.play().catch(() => {
       setVideoEnded(true);
-      setContentVisible(true);
       keepHomepageAtHeroTop(userHasInteractedRef.current);
     });
+
+    // The headline, tagline and all three CTAs used to stay at opacity-0 until
+    // the 7.1s video fired `ended`, plus a 400ms pause and a 1s fade — roughly
+    // 8.5 seconds of blank page on desktop, and up to 12s before the fallback
+    // rescued it. For a shop, that is the entire first impression spent on
+    // nothing. The video now plays as ambience behind content that is already
+    // there; the reveal is a short fade rather than a gate.
+    const reveal = setTimeout(() => {
+      setContentVisible(true);
+      keepHomepageAtHeroTop(userHasInteractedRef.current);
+    }, 300);
 
     const onEnded = () => {
       setVideoEnded(true);
       keepHomepageAtHeroTop(userHasInteractedRef.current);
-      setTimeout(() => setContentVisible(true), 400);
     };
 
     v.addEventListener("ended", onEnded);
 
-    const fallback = setTimeout(() => {
-      if (!contentVisible) {
-        setVideoEnded(true);
-        setContentVisible(true);
-        keepHomepageAtHeroTop(userHasInteractedRef.current);
-      }
-    }, 12000);
-
     return () => {
       v.removeEventListener("ended", onEnded);
-      clearTimeout(fallback);
+      clearTimeout(reveal);
       cleanupListeners();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Crossfade background images after video ends
@@ -159,6 +159,7 @@ export function HeroVideo() {
         muted
         playsInline
         preload="none"
+        poster="/images/history/Header 2.jpg"
         className={`absolute inset-0 w-full h-full object-contain md:object-cover transition-opacity duration-1000 hidden md:block ${
           videoEnded ? "opacity-0" : "opacity-100"
         }`}
