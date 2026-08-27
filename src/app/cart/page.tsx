@@ -102,8 +102,9 @@ export default function CartPage() {
                   <div className="flex items-center border border-surface-600 bg-surface-700">
                     <button
                       onClick={() => updateQuantity(item.variation_id, item.quantity - 1)}
-                      className="p-1.5 text-text-muted hover:text-racing-red transition-colors"
-                      aria-label="Decrease quantity"
+                      disabled={item.quantity <= 1}
+                      aria-label={item.quantity <= 1 ? "Minimum quantity — use the remove button to delete" : "Decrease quantity"}
+                      className="p-1.5 text-text-muted hover:text-racing-red transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       <Minus size={14} />
                     </button>
@@ -135,8 +136,9 @@ export default function CartPage() {
               <div className="hidden md:flex items-center justify-center border border-surface-600 bg-surface-700 h-9">
                 <button
                   onClick={() => updateQuantity(item.variation_id, item.quantity - 1)}
-                  className="px-2 h-full text-text-muted hover:text-racing-red transition-colors"
-                  aria-label="Decrease quantity"
+                  disabled={item.quantity <= 1}
+                  aria-label={item.quantity <= 1 ? "Minimum quantity — use the remove button to delete" : "Decrease quantity"}
+                  className="px-2 h-full text-text-muted hover:text-racing-red transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   <Minus size={14} />
                 </button>
@@ -198,7 +200,7 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-text-secondary">Shipping</span>
-                <span className="text-text-muted text-xs">Calculated at checkout</span>
+                <span className="text-text-muted text-xs">Quoted before you pay</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-text-secondary">Includes GST</span>
@@ -209,7 +211,7 @@ export default function CartPage() {
             </div>
 
             <div className="flex justify-between text-base font-heading uppercase tracking-wide text-white mb-6">
-              <span>Estimated Total</span>
+              <span>Parts total</span>
               <span className="text-racing-red">
                 {formatPrice(cart.subtotal)}
               </span>
