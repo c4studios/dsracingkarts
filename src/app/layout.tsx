@@ -145,7 +145,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${heading.variable} ${body.variable} ${digital.variable}`}>
+    <html lang="en-AU" className={`${heading.variable} ${body.variable} ${digital.variable}`}>
       <body className="bg-racing-black text-text-primary font-body antialiased">
         <SmoothScroll>
           <CartProvider>

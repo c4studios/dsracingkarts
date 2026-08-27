@@ -15,6 +15,11 @@ export default function ContactForm({ defaultSubject, defaultMessage }: ContactF
   const [subject, setSubject] = useState(defaultSubject || "Parts Enquiry");
   const [message, setMessage] = useState(defaultMessage || "");
   const [status, setStatus] = useState<FormStatus>("idle");
+  // Honeypot: a real person never fills this in, bots that auto-fill every
+  // field do. Paired with a render timestamp so instant submissions (also a
+  // bot signature) can be rejected server-side.
+  const [website, setWebsite] = useState("");
+  const [renderedAt] = useState(() => Date.now());
   const [errorMsg, setErrorMsg] = useState("");
 
   async function handleSubmit(e: FormEvent) {
@@ -26,7 +31,14 @@ export default function ContactForm({ defaultSubject, defaultMessage }: ContactF
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message,
+          website,
+          elapsedMs: Date.now() - renderedAt,
+        }),
       });
 
       if (!res.ok) {
@@ -53,6 +65,19 @@ export default function ContactForm({ defaultSubject, defaultMessage }: ContactF
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {/* Honeypot. Hidden from people and from assistive tech, visible to bots. */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
       <div>
         <label htmlFor="contact-name" className={labelClass}>Name</label>
         <input

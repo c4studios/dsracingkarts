@@ -28,6 +28,20 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+
+    // Bot checks. Return 200 so bots get no signal that they were caught,
+    // while the message is silently dropped.
+    const honeypot = String(body.website || "").trim();
+    const elapsedMs = Number(body.elapsedMs);
+    const submittedTooFast = Number.isFinite(elapsedMs) && elapsedMs >= 0 && elapsedMs < 2000;
+    if (honeypot || submittedTooFast) {
+      console.warn("[contact] dropped likely bot submission", {
+        honeypot: Boolean(honeypot),
+        submittedTooFast,
+      });
+      return NextResponse.json({ ok: true });
+    }
+
     const name = String(body.name || "").trim().slice(0, 200);
     const email = String(body.email || "").trim().slice(0, 320);
     const subject = String(body.subject || "").trim().slice(0, 200);
