@@ -3,14 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { ShoppingCart, Menu, X, Phone } from "lucide-react";
+import { useState, useEffect, Suspense } from "react";
+import { ShoppingCart, Menu, X, Phone, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
 import C4FooterCredit from "../c4-footer-credit/C4FooterCredit";
+import { SearchAutocomplete } from "@/components/shop/SearchAutocomplete";
 
 export function Header({ announcementSlot }: { announcementSlot?: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname() ?? "/";
   const { cart } = useCart();
@@ -94,8 +96,24 @@ export function Header({ announcementSlot }: { announcementSlot?: React.ReactNod
               />
             </Link>
 
-            {/* Right actions — Contact (phone) + Cart */}
+            {/* Right actions — Search + Contact (phone) + Cart.
+                Search lives here so a parts catalogue of 8,000+ SKUs is
+                searchable from every page, not only from /shop. */}
             <div className="flex items-center gap-1 ml-auto">
+              <div className="hidden md:block w-48 lg:w-72 mr-2">
+                <Suspense fallback={<div className="h-9" />}>
+                  <SearchAutocomplete variant="header" />
+                </Suspense>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSearchOpen((v) => !v)}
+                className="md:hidden relative p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-racing-black/60 hover:text-racing-red transition-colors"
+                aria-label={searchOpen ? "Close search" : "Search products"}
+                aria-expanded={searchOpen}
+              >
+                {searchOpen ? <X size={18} /> : <Search size={18} />}
+              </button>
               <Link
                 href="/contact"
                 className="relative p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-racing-black/60 hover:text-racing-red transition-colors"
@@ -103,7 +121,11 @@ export function Header({ announcementSlot }: { announcementSlot?: React.ReactNod
               >
                 <Phone size={18} />
               </Link>
-              <Link href="/cart" className="relative p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-racing-black/60 hover:text-racing-red transition-colors">
+              <Link
+                href="/cart"
+                aria-label={cart.item_count > 0 ? `Cart, ${cart.item_count} item${cart.item_count === 1 ? "" : "s"}` : "Cart, empty"}
+                className="relative p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-racing-black/60 hover:text-racing-red transition-colors"
+              >
                 <ShoppingCart size={18} />
                 {cart.item_count > 0 && (
                   <span className="absolute top-1 right-0.5 bg-racing-red text-white text-[9px] w-4 h-4 flex items-center justify-center font-bold rounded-full">
@@ -114,6 +136,15 @@ export function Header({ announcementSlot }: { announcementSlot?: React.ReactNod
             </div>
           </div>
         </div>
+
+        {/* Mobile search — expands from the header icon */}
+        {searchOpen && (
+          <div className="md:hidden border-t border-black/10 px-4 py-3">
+            <Suspense fallback={<div className="h-9" />}>
+              <SearchAutocomplete variant="header" />
+            </Suspense>
+          </div>
+        )}
 
         {/* Desktop navigation — 5 links, Shop highlighted in centre */}
         <nav className="hidden md:block border-t border-gray-200">

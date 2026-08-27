@@ -21,9 +21,16 @@ interface SearchResult {
 
 interface Props {
   initialQuery?: string;
+  /**
+   * "page" is the full-width dark field used on /shop.
+   * "header" is the compact light field that lives in the white site header,
+   *  so search is reachable from every page rather than only the shop.
+   */
+  variant?: "page" | "header";
 }
 
-export function SearchAutocomplete({ initialQuery = "" }: Props) {
+export function SearchAutocomplete({ initialQuery = "", variant = "page" }: Props) {
+  const isHeader = variant === "header";
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(initialQuery);
@@ -159,10 +166,16 @@ export function SearchAutocomplete({ initialQuery = "" }: Props) {
           open ? "ring-1 ring-brand-red/40 shadow-[0_0_24px_rgba(230,0,18,0.15)]" : ""
         }`}
       >
-        <div className="flex items-center bg-surface-800/80 backdrop-blur-sm border border-surface-600 hover:border-surface-500 focus-within:border-brand-red/60 transition-colors">
+        <div
+          className={
+            isHeader
+              ? "flex items-center bg-black/[0.04] border border-black/10 hover:border-black/20 focus-within:border-racing-red/60 focus-within:ring-2 focus-within:ring-racing-red/30 rounded-sm transition-colors"
+              : "flex items-center bg-surface-800/80 backdrop-blur-sm border border-surface-600 hover:border-surface-500 focus-within:border-brand-red/60 focus-within:ring-2 focus-within:ring-white/40 transition-colors"
+          }
+        >
           <Search
-            size={18}
-            className="ml-4 text-text-muted shrink-0 pointer-events-none"
+            size={isHeader ? 15 : 18}
+            className={`shrink-0 pointer-events-none ${isHeader ? "ml-3 text-racing-black/40" : "ml-4 text-text-muted"}`}
           />
           <input
             ref={inputRef}
@@ -172,13 +185,17 @@ export function SearchAutocomplete({ initialQuery = "" }: Props) {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
-            placeholder="Search chains, engines, racewear…"
+            placeholder={isHeader ? "Search parts or SKU…" : "Search chains, engines, racewear…"}
             aria-label="Search products"
             aria-autocomplete="list"
             aria-expanded={showDropdown}
             aria-controls={showDropdown ? "product-search-results" : undefined}
             aria-haspopup="listbox"
-            className="flex-1 bg-transparent px-3 py-4 text-white placeholder:text-text-muted focus:outline-none text-sm md:text-base"
+            className={
+              isHeader
+                ? "flex-1 bg-transparent px-2.5 py-2 text-racing-black placeholder:text-racing-black/35 focus:outline-none text-sm"
+                : "flex-1 bg-transparent px-3 py-4 text-white placeholder:text-text-muted focus:outline-none text-sm md:text-base"
+            }
           />
           {query && (
             <button
@@ -186,15 +203,21 @@ export function SearchAutocomplete({ initialQuery = "" }: Props) {
                 setQuery("");
                 inputRef.current?.focus();
               }}
-              className="mr-2 p-2 text-text-muted hover:text-white transition-colors"
+              className={
+                isHeader
+                  ? "mr-1 p-1.5 text-racing-black/40 hover:text-racing-black transition-colors"
+                  : "mr-2 p-2 text-text-muted hover:text-white transition-colors"
+              }
               aria-label="Clear search"
             >
-              <X size={16} />
+              <X size={isHeader ? 14 : 16} />
             </button>
           )}
-          <kbd className="hidden md:flex items-center gap-1 mr-4 px-2 py-1 bg-surface-700 border border-surface-600 text-text-muted text-[10px] font-heading tracking-wider">
-            <Command size={10} />K
-          </kbd>
+          {!isHeader && (
+            <kbd className="hidden md:flex items-center gap-1 mr-4 px-2 py-1 bg-surface-700 border border-surface-600 text-text-muted text-[10px] font-heading tracking-wider">
+              <Command size={10} />K
+            </kbd>
+          )}
         </div>
       </div>
 

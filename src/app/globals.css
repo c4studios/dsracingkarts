@@ -55,6 +55,26 @@
     ) 0 0 / 20px 20px;
   }
 
+  /* Aliases. Components were written against the American spellings while only
+     the British ones were defined, so carbon-bg / checkered-bg silently
+     rendered as flat colour on product cards, category tiles, cart thumbnails
+     and the newsletter panel. Both spellings now resolve. */
+  .carbon-bg {
+    background:
+      linear-gradient(45deg, rgba(20,20,20,0.9) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(20,20,20,0.9) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(20,20,20,0.9) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(20,20,20,0.9) 75%);
+    background-size: 4px 4px;
+    background-color: #0a0a0a;
+  }
+
+  .checkered-bg {
+    background: repeating-conic-gradient(
+      rgba(255,255,255,0.03) 0% 25%, transparent 0% 50%
+    ) 0 0 / 20px 20px;
+  }
+
   .chequered-stripe-sm {
     background: repeating-conic-gradient(
       #1a1a1a 0% 25%, #222222 0% 50%
@@ -67,7 +87,8 @@
   .btn-primary {
     @apply relative overflow-hidden bg-racing-red text-white font-heading
            uppercase tracking-[0.15em] px-8 py-3.5 transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-racing-red/50
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white
+           focus-visible:ring-offset-2 focus-visible:ring-offset-racing-black
            hover:bg-racing-red-light hover:shadow-[0_0_25px_rgba(230,0,18,0.4)]
            active:scale-[0.98];
   }
@@ -225,4 +246,35 @@
   .sponsor-track--rtl {
     animation: none !important;
   }
+}
+
+/* ── Focus fallback ──────────────────────────────────────────────────────────
+   Anything that sets focus:outline-none without providing a replacement still
+   gets a visible, high-contrast indicator. White on the near-black page is
+   ~19:1, comfortably past the 3:1 WCAG 2.4.11 requires. */
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* ── Skip link ───────────────────────────────────────────────────────────────
+   First focusable element on the page. Keyboard users can otherwise only reach
+   the product grid by tabbing past the header and, on /shop, 89 category
+   buttons. */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 100;
+  background: #e60012;
+  color: #ffffff;
+  padding: 0.625rem 1rem;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: top 150ms ease-in-out;
+}
+.skip-link:focus {
+  top: 0.5rem;
 }

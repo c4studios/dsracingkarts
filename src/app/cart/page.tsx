@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
+import { PendingOrderNotice } from "@/components/shop/PendingOrderNotice";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -39,6 +40,8 @@ export default function CartPage() {
         <ChevronRight size={12} />
         <span className="text-text-secondary">Cart</span>
       </div>
+
+      <PendingOrderNotice />
 
       <h1 className="font-heading text-2xl md:text-3xl uppercase tracking-[0.15em] text-white mb-8">
         Your <span className="text-racing-red">Cart</span>

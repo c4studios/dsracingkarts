@@ -47,12 +47,30 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Success — clear cart and redirect to confirmation
-      clearCart();
+      // Do NOT clear the cart before sending the customer to Square. Anyone who
+      // hesitates on the invoice page, loses signal, or comes back later would
+      // otherwise return to an empty cart, silently losing an order that can
+      // take real effort to assemble from a catalogue this size. The
+      // confirmation route clears it once payment is actually confirmed.
       if (data.invoice_url) {
+        // Remember the order so the cart page can offer to resume payment
+        // instead of the customer returning to a stale cart with no context.
+        try {
+          localStorage.setItem(
+            "dsr-pending-order",
+            JSON.stringify({
+              order_number: data.order_number ?? null,
+              invoice_url: data.invoice_url,
+              at: Date.now(),
+            })
+          );
+        } catch {
+          // localStorage unavailable — non-fatal, the cart is still intact.
+        }
         window.location.assign(data.invoice_url);
         return;
       }
+      clearCart();
       window.location.assign(`/checkout/confirmation?order=${data.order_number}`);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -219,7 +237,7 @@ export default function CheckoutPage() {
             disabled={loading}
             className="btn-primary w-full text-lg"
           >
-            {loading ? "Creating invoice..." : `Create invoice & pay ${formatPrice(total)}`}
+            {loading ? "Requesting invoice..." : `Request invoice — ${formatPrice(total)} + shipping`}
           </button>
         </div>
 
@@ -253,11 +271,35 @@ export default function CheckoutPage() {
               <span>{formatPrice(tax)}</span>
             </div>
             <div className="flex justify-between font-heading text-lg pt-2 border-t border-surface-600">
-              <span>Total</span>
+              <span>Parts total</span>
               <span className="text-brand-red">{formatPrice(total)}</span>
             </div>
+            <p className="text-text-muted text-[11px] leading-relaxed pt-1">
+              Shipping is not included above and is quoted before you pay.
+            </p>
           </div>
 
+          <div className="mt-4 border border-surface-600 bg-surface-800/60 p-3">
+            <p className="font-heading text-[10px] uppercase tracking-[0.15em] text-text-secondary mb-2">
+              What happens next
+            </p>
+            <ol className="text-text-muted text-xs leading-relaxed space-y-1 list-decimal list-inside">
+              <li>We quote shipping for your order and destination</li>
+              <li>You approve the invoice</li>
+              <li>You pay — nothing is charged before that</li>
+            </ol>
+            <p className="text-text-muted text-xs mt-3 pt-3 border-t border-surface-600">
+              Questions? Call{" "}
+              <a href="tel:+61492454854" className="text-brand-red hover:underline">
+                0492 454 854
+              </a>{" "}
+              or read our{" "}
+              <a href="/shipping-returns" className="text-brand-red hover:underline">
+                shipping &amp; returns
+              </a>
+              . You&apos;ll get a confirmation email once your order is placed.
+            </p>
+          </div>
           <p className="text-text-muted text-xs mt-3">
             Shipping will be quoted based on order size and destination. We&apos;ll be in touch after your order.
           </p>

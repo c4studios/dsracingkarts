@@ -147,12 +147,15 @@ export default function RootLayout({
   return (
     <html lang="en-AU" className={`${heading.variable} ${body.variable} ${digital.variable}`}>
       <body className="bg-racing-black text-text-primary font-body antialiased">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <SmoothScroll>
           <CartProvider>
             <PublicChrome>
               <Header announcementSlot={<ActiveAnnouncement />} />
             </PublicChrome>
-            <main className="min-h-screen">
+            <main id="main-content" className="min-h-screen">
               <BackButton />
               {children}
             </main>
