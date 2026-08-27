@@ -60,8 +60,11 @@ export default function CheckoutPage() {
     }
   }
 
-  const tax = Math.round(cart.subtotal * 0.1 * 100) / 100;
-  const total = cart.subtotal + tax;
+  // Prices are GST-inclusive (Square's GST tax object is inclusion_type
+  // INCLUSIVE), so the cart subtotal IS the total payable. GST is the 1/11th
+  // already inside it, shown for transparency, never added on top.
+  const total = cart.subtotal;
+  const tax = Math.round((total / 11) * 100) / 100;
 
   if (cart.items.length === 0) {
     return (
@@ -246,7 +249,7 @@ export default function CheckoutPage() {
               <span className="text-text-muted text-xs">Quoted separately</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-text-secondary">GST (10%)</span>
+              <span className="text-text-secondary">Includes GST</span>
               <span>{formatPrice(tax)}</span>
             </div>
             <div className="flex justify-between font-heading text-lg pt-2 border-t border-surface-600">

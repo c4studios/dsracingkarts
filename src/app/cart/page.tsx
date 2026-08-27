@@ -198,9 +198,9 @@ export default function CartPage() {
                 <span className="text-text-muted text-xs">Calculated at checkout</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-text-secondary">GST (10%)</span>
+                <span className="text-text-secondary">Includes GST</span>
                 <span className="text-white font-medium">
-                  {formatPrice(Math.round(cart.subtotal * 0.1 * 100) / 100)}
+                  {formatPrice(Math.round((cart.subtotal / 11) * 100) / 100)}
                 </span>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function CartPage() {
             <div className="flex justify-between text-base font-heading uppercase tracking-wide text-white mb-6">
               <span>Estimated Total</span>
               <span className="text-racing-red">
-                {formatPrice(cart.subtotal + Math.round(cart.subtotal * 0.1 * 100) / 100)}
+                {formatPrice(cart.subtotal)}
               </span>
             </div>
 

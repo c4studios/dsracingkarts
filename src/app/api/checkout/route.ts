@@ -545,10 +545,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Calculate tax (10% GST for Australia)
-    const tax = Math.round(verifiedSubtotal * 0.1 * 100) / 100;
+    // GST. Square's catalogue GST tax object is configured inclusion_type
+    // INCLUSIVE, so every price in the catalogue already contains its GST. The
+    // price shown to the customer is therefore the price they pay, and GST is
+    // the 1/11th component already inside that figure — never an addition.
+    // (This previously added 10% on top, overcharging every online order.)
     const shipping = 0; // Shipping quoted separately per order
-    const total = verifiedSubtotal + tax;
+    const total = Math.round((verifiedSubtotal + shipping) * 100) / 100;
+    const tax = Math.round((total / 11) * 100) / 100;
     const amountCents = Math.round(total * 100);
 
     // ---- 2. Create order in Supabase (pending) ----
@@ -740,7 +744,10 @@ export async function POST(request: NextRequest) {
             {
               uid: "gst",
               name: "GST",
-              type: "ADDITIVE",
+              // INCLUSIVE to match the catalogue tax configuration. Line item
+              // prices already contain GST, so an ADDITIVE tax here would both
+              // overcharge and misreport tax against in-store sales.
+              type: "INCLUSIVE",
               percentage: "10",
               scope: "ORDER",
             },
@@ -898,7 +905,7 @@ export async function POST(request: NextRequest) {
                     <td style="padding:6px 12px;color:#fff;font-size:14px;text-align:right">$${verifiedSubtotal.toFixed(2)}</td>
                   </tr>
                   <tr>
-                    <td style="padding:6px 12px;color:#b0b0b0;font-size:14px">GST (10%)</td>
+                    <td style="padding:6px 12px;color:#b0b0b0;font-size:14px">Includes GST</td>
                     <td style="padding:6px 12px;color:#fff;font-size:14px;text-align:right">$${tax.toFixed(2)}</td>
                   </tr>
                   <tr style="border-top:2px solid #e60012">
@@ -1097,7 +1104,7 @@ export async function POST(request: NextRequest) {
                 <td style="padding:6px 12px;color:#fff;font-size:14px;text-align:right">$${verifiedSubtotal.toFixed(2)}</td>
               </tr>
               <tr>
-                <td style="padding:6px 12px;color:#b0b0b0;font-size:14px">GST (10%)</td>
+                <td style="padding:6px 12px;color:#b0b0b0;font-size:14px">Includes GST</td>
                 <td style="padding:6px 12px;color:#fff;font-size:14px;text-align:right">$${tax.toFixed(2)}</td>
               </tr>
               <tr style="border-top:2px solid #e60012">
@@ -1154,7 +1161,7 @@ export async function POST(request: NextRequest) {
                 <td style="padding:6px 12px;color:#fff;font-size:14px;text-align:right">$${verifiedSubtotal.toFixed(2)}</td>
               </tr>
               <tr>
-                <td style="padding:6px 12px;color:#b0b0b0;font-size:14px">GST (10%)</td>
+                <td style="padding:6px 12px;color:#b0b0b0;font-size:14px">Includes GST</td>
                 <td style="padding:6px 12px;color:#fff;font-size:14px;text-align:right">$${tax.toFixed(2)}</td>
               </tr>
               <tr style="border-top:2px solid #e60012">
