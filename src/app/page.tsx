@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { createPublicReadClient } from "@/lib/supabase/server";
 import { CategoryGrid } from "@/components/shop/CategoryGrid";
+import { ProductCard } from "@/components/shop/ProductCard";
 import { HeroVideo } from "@/components/layout/HeroVideo";
 import { NewsletterSignup } from "@/components/layout/NewsletterSignup";
 import { GameTeaser } from "@/components/sections/GameTeaser";
@@ -106,6 +107,25 @@ export default async function HomePage() {
     .order("sort_order")
     .order("created_at");
 
+  // A strip of parts that are actually in stock and actually photographed.
+  // The home page previously carried no product at all, so a visitor arriving
+  // from search had nothing to buy without first finding their way into the
+  // shop. The !inner joins restrict this to stock-managed items with a positive
+  // count, so nothing here can land on a "Contact for ETA" page.
+  const { data: inStockProducts } = await supabase
+    .from("products")
+    .select(
+      "id, name, slug, sku, base_price, primary_image_url, is_stockable, product_variations!inner(price, sale_price, sku, inventory!inner(quantity, stock_status))"
+    )
+    .eq("status", "active")
+    .eq("visibility", "visible")
+    .eq("is_sellable", true)
+    .neq("slug", GIFT_CARD_SLUG)
+    .gt("product_variations.inventory.quantity", 0)
+    .not("primary_image_url", "is", null)
+    .not("primary_image_url", "ilike", "%image-coming-soon%")
+    .limit(6);
+
   const { count: productCount } = await supabase
     .from("products")
     .select("id", { count: "exact", head: true })
@@ -191,6 +211,37 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {inStockProducts && inStockProducts.length > 0 && (
+        <section className="bg-racing-black py-14 md:py-18">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="h-[1px] w-8 bg-racing-red" />
+                  <span className="font-heading text-xs tracking-[0.4em] text-racing-red uppercase">
+                    On the shelf
+                  </span>
+                </div>
+                <h2 className="section-heading">
+                  In Stock <span className="text-racing-red">Now</span>
+                </h2>
+              </div>
+              <Link
+                href="/shop?view=all"
+                className="hidden md:flex items-center gap-1 font-heading text-xs uppercase tracking-[0.15em] text-text-muted hover:text-racing-red transition-colors"
+              >
+                Shop All <ChevronRight size={14} />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+              {inStockProducts.map((product, i) => (
+                <ProductCard key={product.id} product={product} priority={i < 3} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <GameTeaser />
 

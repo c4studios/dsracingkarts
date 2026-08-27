@@ -9,7 +9,7 @@ import { formatPrice } from "@/lib/utils";
 import { isRealProductImageUrl } from "@/lib/product-images";
 import { isUnavailableByStock } from "@/lib/stock";
 import { categoryHref } from "@/lib/shop-links";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Truck, RotateCcw, Phone } from "lucide-react";
 import sanitizeHtml from "sanitize-html";
 import type { Metadata } from "next";
 
@@ -249,6 +249,41 @@ export default async function ProductPage({ params }: Props) {
 
           {/* Add to cart */}
           <AddToCartButton product={cartProduct} variations={variations} />
+
+          {/* Dispatch, shipping and returns. All three already existed in the
+              schema.org block on this page, so they were being told to Google
+              and withheld from the customer standing in front of the buy
+              button. */}
+          <ul className="mt-5 grid gap-2 text-xs text-text-muted">
+            <li className="flex items-start gap-2">
+              <Truck size={14} className="text-brand-red shrink-0 mt-0.5" />
+              <span>
+                {product.is_stockable === false
+                  ? "Sourced from our supplier — usually dispatched within 5 business days"
+                  : "In stock and dispatched from our Sydney workshop"}
+                . Shipping Australia-wide, quoted per order.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <RotateCcw size={14} className="text-brand-red shrink-0 mt-0.5" />
+              <span>
+                14-day returns on unused items.{" "}
+                <Link href="/shipping-returns" className="text-brand-red hover:underline">
+                  Shipping &amp; returns
+                </Link>
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <Phone size={14} className="text-brand-red shrink-0 mt-0.5" />
+              <span>
+                Not sure it fits?{" "}
+                <a href="tel:+61492454854" className="text-brand-red hover:underline">
+                  Call 0492 454 854
+                </a>{" "}
+                and we&apos;ll check for you.
+              </span>
+            </li>
+          </ul>
 
           {/* Description */}
           {product.description && (

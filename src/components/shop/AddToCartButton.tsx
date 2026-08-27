@@ -98,8 +98,11 @@ export function AddToCartButton({ product, variations }: Props) {
         </div>
       )}
 
-      {/* Price for selected variation */}
-      {selected && (
+      {/* Price for the selected variation. Only shown when there is a choice to
+          make: with a single variation the product page already prints this
+          price larger and directly under the title, so rendering it again here
+          duplicated it on every single-variation product in the catalogue. */}
+      {selected && variations.length > 1 && (
         <p className="text-2xl font-heading tracking-wide">
           {selected.sale_price ? (
             <>
@@ -133,13 +136,34 @@ export function AddToCartButton({ product, variations }: Props) {
                 Not available for immediate purchase
               </p>
               <p>{ZERO_STOCK_CONTACT_MESSAGE}</p>
+              {/* Roughly two thirds of the catalogue lands here, so this is the
+                  primary conversion path for most products rather than a dead
+                  end. Pre-fill the enquiry with the exact part and SKU: the
+                  contact page already reads `subject` and `message` from the
+                  query string, and nothing was using them. Asking a customer to
+                  retype a part number they just looked at loses the enquiry. */}
               <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 mt-3 text-racing-red hover:text-racing-red/80 underline underline-offset-2 transition-colors"
+                href={`/contact?subject=${encodeURIComponent("ETA request")}&message=${encodeURIComponent(
+                  `Hi, could you let me know the ETA on:
+
+${product.name}${
+                    selected && selected.name && selected.name !== "Regular" ? ` - ${selected.name}` : ""
+                  }${selected?.sku ? `
+SKU: ${selected.sku}` : ""}
+
+Thanks.`
+                )}`}
+                className="inline-flex items-center gap-2 mt-3 bg-racing-red text-white font-heading text-xs uppercase tracking-[0.12em] px-4 py-2.5 hover:bg-racing-red/90 transition-colors no-underline"
               >
                 <MessageCircle size={14} />
-                Contact us
+                Request an ETA
               </Link>
+              <a
+                href="tel:+61492454854"
+                className="inline-flex items-center gap-2 mt-3 ml-2 text-racing-red hover:text-racing-red/80 underline underline-offset-2 transition-colors"
+              >
+                Or call 0492 454 854
+              </a>
             </div>
           </div>
         </div>
