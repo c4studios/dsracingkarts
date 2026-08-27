@@ -141,3 +141,47 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+/**
+ * Vercel Cron invokes scheduled jobs with a GET request (authenticated by an
+ * `Authorization: Bearer $CRON_SECRET` header that Vercel adds automatically
+ * when CRON_SECRET is set on the project).
+ *
+ * Only POST was exported, so the nightly job in vercel.json has been getting
+ * 405 Method Not Allowed and the full catalogue reconcile has never run —
+ * leaving webhook deliveries as the only path for Square changes to reach the
+ * site, with no safety net when one is missed.
+ */
+export async function GET(request: NextRequest) {
+  if (!isAuthorisedCron(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!process.env.SQUARE_ACCESS_TOKEN) {
+    return NextResponse.json(
+      { error: "SQUARE_ACCESS_TOKEN is not configured on the server." },
+      { status: 500 }
+    );
+  }
+
+  const startedAt = Date.now();
+  try {
+    const result = await reconcileCatalogForAdminResync();
+    revalidateCatalogSurfaces();
+    await recordHeartbeat(result, "completed");
+    return NextResponse.json({
+      ok: true,
+      durationMs: Date.now() - startedAt,
+      ...result,
+    });
+  } catch (err: any) {
+    console.error("[square-resync] cron run failed:", err);
+    return NextResponse.json(
+      {
+        error: toErrorMessage(err, "Reconciliation failed"),
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 500 }
+    );
+  }
+}
