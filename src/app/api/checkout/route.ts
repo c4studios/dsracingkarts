@@ -6,6 +6,7 @@ import { DEFAULT_TRANSACTIONAL_EMAIL_FROM } from "@/lib/contact-email";
 import { sendEmail } from "@/lib/email";
 import {
   buildSquareOrderLineItems,
+  buildOrderItemRows,
 } from "@/lib/checkout-guards";
 import {
   hasEnoughStockForQuantity,
@@ -706,15 +707,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert order line items
-    // `square_variation_token` rides along on the in-memory cart lines because
-    // buildSquareOrderLineItems() needs it below, but it is NOT a column on
-    // order_items. Sending it makes PostgREST reject the entire insert (42703),
-    // which fails every checkout. Strip it before it hits the database.
-    const itemsToInsert = orderItems.map(({ square_variation_token: _sqToken, ...item }: any) => ({
-      ...item,
-      order_id: order.id,
-    }));
+    // Insert order line items. buildOrderItemRows() projects explicitly onto
+    // the order_items columns, so extra in-memory fields (such as
+    // square_variation_token, which the Square order below needs) can never
+    // leak into the insert and reject the statement.
+    const itemsToInsert = buildOrderItemRows(orderItems, order.id);
     const { error: orderItemsError } = await supabase.from("order_items").insert(itemsToInsert);
     if (orderItemsError) {
       await supabase.from("orders").delete().eq("id", order.id);

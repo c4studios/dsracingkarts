@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "node scripts/test-contact-email.mjs && node scripts/test-checkout-guards.mjs && node scripts/test-error-message.mjs && node scripts/test-category-assignment-queue.mjs && node scripts/test-shop-chassis-links.mjs && node scripts/test-chassis-page-content.mjs && node scripts/test-racewear-gallery.mjs && node scripts/test-homepage-hero-media.mjs && node scripts/test-square-default-vendor-import.mjs",
+    "test": "node scripts/test-contact-email.mjs && node scripts/test-checkout-guards.mjs && node scripts/test-error-message.mjs && node scripts/test-category-assignment-queue.mjs && node scripts/test-shop-chassis-links.mjs && node scripts/test-chassis-page-content.mjs && node scripts/test-racewear-gallery.mjs && node scripts/test-homepage-hero-media.mjs && node scripts/test-square-default-vendor-import.mjs && node scripts/test-order-item-rows.mjs",
     "import-csv": "node scripts/import-square-csv.js",
     "migrate-images": "node scripts/migrate-images.js",
     "migrate-images-cloudinary": "node scripts/migrate-images-to-cloudinary.mjs",
@@ -18,7 +18,8 @@
     "merge-duplicate-categories": "node scripts/merge-duplicate-categories.js",
     "reconcile-categories": "node scripts/reconcile-categories-square.js",
     "export-square-default-vendors": "node scripts/export-square-default-vendor-import.mjs",
-    "export-square-default-vendors:all": "node scripts/export-square-default-vendor-import.mjs --scope all"
+    "export-square-default-vendors:all": "node scripts/export-square-default-vendor-import.mjs --scope all",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
