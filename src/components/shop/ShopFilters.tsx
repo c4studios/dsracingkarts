@@ -11,10 +11,11 @@ interface Props {
   categories: Pick<Category, "id" | "name" | "slug" | "parent_id">[];
   currentCategory?: string;
   currentSort?: string;
+  currentStock?: string;
   currentSearch?: string;
 }
 
-export function ShopFilters({ categories, currentCategory, currentSort, currentSearch }: Props) {
+export function ShopFilters({ categories, currentCategory, currentSort, currentStock, currentSearch }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -49,7 +50,8 @@ export function ShopFilters({ categories, currentCategory, currentSort, currentS
   const activeFilterCount =
     (currentCategory ? 1 : 0) +
     (currentSearch ? 1 : 0) +
-    (currentSort && currentSort !== "name_asc" ? 1 : 0);
+    (currentSort && currentSort !== "name_asc" ? 1 : 0) +
+    (currentStock === "in" ? 1 : 0);
 
   const filterContent = (
     <>
@@ -106,6 +108,44 @@ export function ShopFilters({ categories, currentCategory, currentSort, currentS
         </ul>
       </div>
 
+      {/* Availability. In-stock items always sort first; this removes the rest
+          entirely for anyone who only wants what can ship today. */}
+      <div>
+        <label className="font-heading text-xs uppercase tracking-[0.3em] text-brand-red block mb-3">
+          Availability
+        </label>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={currentStock === "in"}
+          onClick={() => updateParam("stock", currentStock === "in" ? undefined : "in")}
+          className={`w-full flex items-center justify-between gap-3 border px-3 py-2.5 text-sm transition-colors ${
+            currentStock === "in"
+              ? "border-brand-red bg-brand-red/10 text-white"
+              : "border-surface-600 bg-surface-800 text-text-secondary hover:border-surface-500"
+          }`}
+        >
+          <span>In stock now</span>
+          <span
+            aria-hidden="true"
+            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
+              currentStock === "in" ? "bg-brand-red" : "bg-surface-600"
+            }`}
+          >
+            <span
+              className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                currentStock === "in" ? "translate-x-[1.15rem]" : "translate-x-[0.15rem]"
+              }`}
+            />
+          </span>
+        </button>
+        <p className="text-text-muted text-[11px] leading-relaxed mt-2">
+          {currentStock === "in"
+            ? "Showing only parts we can ship now."
+            : "Showing everything. Parts we hold appear first; the rest can be ordered in — just ask for an ETA."}
+        </p>
+      </div>
+
       {/* Sort */}
       <div>
         <label className="font-heading text-xs uppercase tracking-[0.3em] text-brand-red block mb-3">
@@ -117,6 +157,7 @@ export function ShopFilters({ categories, currentCategory, currentSort, currentS
           className="input-dark text-sm"
         >
           <option value="name_asc">Name: A to Z</option>
+          <option value="stock">Availability</option>
           <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
         </select>

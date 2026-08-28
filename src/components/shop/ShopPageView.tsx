@@ -25,6 +25,8 @@ export type ShopViewParams = {
   category?: string;
   search?: string;
   sort?: string;
+  /** "in" restricts the list to products that can be bought right now. */
+  stock?: string;
   page?: string;
   // ?view=all opts out of the mobile category-first landing and shows
   // the flat product list on every device.
@@ -267,10 +269,29 @@ export async function ShopPageView({ params, basePath }: ShopPageViewProps) {
       query = applyProductSearchFilter(query, searchTermGroups, searchMode, relatedMatchIds);
     }
 
+    // Roughly two thirds of the catalogue is genuinely out of stock (verified
+    // against Square, not inferred), so browsing without help means a hit rate
+    // near one in three. Unavailable products are NOT hidden by default: they
+    // still carry an ETA enquiry, which is the conversion path for most of the
+    // catalogue, and hiding them would cost breadth and indexing. Instead they
+    // sort last, so the first page a visitor sees is buyable. `?stock=in`
+    // removes them outright for anyone who only wants what ships today.
+    if (params.stock === "in") {
+      query = query.eq("in_stock", true);
+    }
+
     if (shouldRankSearchResults) {
+      query = query.order("in_stock", { ascending: false });
       query = query.order("name", { ascending: true });
     } else {
+      if (params.sort !== "stock") {
+        query = query.order("in_stock", { ascending: false });
+      }
       switch (params.sort) {
+        case "stock":
+          query = query.order("in_stock", { ascending: false });
+          query = query.order("name", { ascending: true });
+          break;
         case "price_asc":
           query = query.order("base_price", { ascending: true, nullsFirst: false });
           break;
@@ -357,6 +378,7 @@ export async function ShopPageView({ params, basePath }: ShopPageViewProps) {
     if (!basePath && params.category) p.set("category", params.category);
     if (params.search) p.set("search", params.search);
     if (params.sort) p.set("sort", params.sort);
+    if (params.stock) p.set("stock", params.stock);
     if (pageNum > 1) p.set("page", String(pageNum));
     const qs = p.toString();
     return `${basePath || "/shop"}${qs ? `?${qs}` : ""}`;
@@ -514,6 +536,7 @@ export async function ShopPageView({ params, basePath }: ShopPageViewProps) {
             categories={dedupedCategories}
             currentCategory={selectedCategory?.slug ?? params.category}
             currentSort={params.sort}
+            currentStock={params.stock}
             currentSearch={params.search}
           />
         </aside>
